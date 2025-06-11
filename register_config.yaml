@@ -1,0 +1,750 @@
+modbus:
+  ip: 192.168.0.194
+  port: 502
+registers:
+- address: 0
+  name: Digital Status Reg 1
+  scale: 1
+  group: Digital Reg
+  dataType: bool
+  ui:
+    component: line_chart
+    color: rgba(255, 128, 192, 1)
+    label: Digital Status Reg 1
+    view: [historical]
+- address: 1
+  name: Digital Status Reg 2
+  scale: 1
+  group: Digital Reg
+  dataType: bool
+  ui:
+    component: line_chart
+    color: rgba(128, 128, 192, 1)
+    label: Digital Status Reg 2
+    view: [historical]
+- address: 2
+  name: Digital Status Reg 3
+  scale: 1
+  group: Digital Reg
+  dataType: bool
+  ui:
+    component: line_chart
+    color: rgba(128, 0, 64, 1)
+    label: Digital Status Reg 3
+    view: [historical]
+- address: 3
+  name: Digital Status Reg 4
+  scale: 1
+  group: Digital Reg
+  dataType: bool
+  ui:
+    component: line_chart
+    color: rgba(128, 0, 128, 1)
+    label: Digital Status Reg 4
+    view: [historical]
+- address: 4
+  name: Pressure_1
+  unit: mbar
+  scale: 0.1
+  group: pressure
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(177, 53, 143, 1)
+    label: Pressure 1
+    view: [historical]
+- address: 5
+  name: Pressure_2
+  unit: mbar
+  scale: 0.1
+  group: pressure
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(41, 34, 187, 1)
+    label: Pressure 2
+    view: [historical]
+- address: 6
+  name: Pressure_3
+  unit: mbar
+  scale: 0.1
+  group: pressure
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(53, 49, 119, 1)
+    label: Pressure 3
+    view: [historical]
+- address: 7
+  name: Pressure_4
+  unit: mbar
+  scale: 0.1
+  group: pressure
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(83, 27, 115, 1)
+    label: Pressure 4
+    view: [historical]
+- address: 15
+  name: OCV_1
+  unit: V
+  scale: 0.001
+  group: ocv
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(248, 135, 238, 1)
+    label: OCV 1
+    view: [historical, live]
+- address: 16
+  name: OCV_2
+  unit: V
+  scale: 0.001
+  group: ocv
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(84, 170, 27, 1)
+    label: OCV 2
+    view: [historical, live]
+- address: 17
+  name: Cluster_1_Voltage
+  unit: V
+  scale: 0.1
+  group: voltage
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(211, 19, 159, 1)
+    label: Cluster 1 Voltage
+    view: [historical]
+- address: 18
+  name: Cluster_1_Current
+  unit: A
+  scale: 0.1
+  group: current
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(26, 101, 13, 1)
+    label: Cluster 1 Current
+    view: [historical]
+- address: 19
+  name: Cluster_2_Voltage
+  unit: V
+  scale: 0.1
+  group: voltage
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(103, 131, 96, 1)
+    label: Cluster 2 Voltage
+    view: [historical]
+- address: 20
+  name: Cluster_2_Current
+  unit: A
+  scale: 0.1
+  group: current
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(87, 91, 205, 1)
+    label: Cluster 2 Current
+    view: [historical]
+- address: 21
+  name: HVDC_Voltage
+  unit: V
+  scale: 0.1
+  group: hvdc
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(230, 131, 20, 1)
+    label: HVDC Voltage
+    view: [historical]
+- address: 22
+  name: HVDC_Current
+  unit: A
+  scale: 0.1
+  group: hvdc
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(171, 61, 223, 1)
+    label: HVDC Current
+    view: [historical]
+- address: 23
+  name: SOC1
+  unit: '%'
+  scale: 0.01
+  group: soc
+  dataType: sint16
+  ui:
+    component: [line_chart, soc_meter]
+    color: rgba(23, 149, 81, 1)
+    label: SOC1
+    view: [historical, live]
+- address: 24
+  name: SOC2
+  unit: '%'
+  scale: 0.01
+  group: soc
+  dataType: sint16
+  ui:
+    component: [line_chart, soc_meter]
+    color: rgba(94, 97, 36, 1)
+    label: SOC2
+    view: [historical, live]
+- address: 27
+  name: Primary_Pump_Ramp_PID_SP_FB
+  unit: mbar
+  scale: 0.01
+  group: pump
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(229, 119, 129, 1)
+    label: Primary Pump Ramp PID SP_FB
+    view: [historical]
+- address: 28
+  name: Secondary_Pump_Ramp_PID_SP_FB
+  unit: mbar
+  scale: 0.01
+  group: pump
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(52, 93, 187, 1)
+    label: Secondary Pump Ramp PID SP_FB
+    view: [historical]
+- address: 29
+  name: Cluster_1_Power
+  unit: kW
+  scale: 0.01
+  group: power
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(99, 211, 154, 1)
+    label: Cluster 1 Power
+    view: [historical]
+- address: 30
+  name: Cluster_2_Power
+  unit: kW
+  scale: 0.01
+  group: power
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(55, 108, 244, 1)
+    label: Cluster 2 Power
+    view: [historical]
+- address: 31
+  name: HVDC_Power
+  unit: kW
+  scale: 0.01
+  group: power
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(50, 201, 90, 1)
+    label: HVDC Power
+    view: [historical]
+- address: 32
+  name: Total_Cluster_Power
+  unit: kW
+  scale: 0.01
+  group: power
+  dataType: sint16
+  ui:
+    component: line_chart
+    color: rgba(28, 5, 132, 1)
+    label: Total Cluster Power
+    view: [historical]
+- address: 38
+  name: Cluster-1 Condition
+  scale: 1
+  ui:
+    component: status_display
+    label: Cluster-1 Condition
+    view: [live]
+    status_mapping:
+      '1':
+        text: Initialisation
+        color: red
+      '2':
+        text: DCINTG
+        color: orange
+      '3':
+        text: Powerflow
+        color: green
+      '4':
+        text: Fault
+        color: red
+    bit_mapping:
+      '1': Initialising
+      '2': DCINTG
+      '3': Powerflow
+      '4': Fault
+- address: 39
+  name: Cluster-2 Condition
+  scale: 1
+  ui:
+    component: status_display
+    label: Cluster-2 Condition
+    view: [live]
+    status_mapping:
+      '1':
+        text: Initialisation
+        color: red
+      '2':
+        text: DCINTG
+        color: orange
+      '3':
+        text: Powerflow
+        color: green
+      '4':
+        text: Fault
+        color: red
+    bit_mapping:
+      '1': Initialising
+      '2': DCINTG
+      '3': Powerflow
+      '4': Fault
+
+- address: 42
+  name: System Condition
+  scale: 1
+  ui:
+    component: status_display
+    label: System Condition
+    view: [live]
+    status_mapping:
+      '1':
+        text: Initialisation
+        color: red
+      '2':
+        text: DCINTG
+        color: orange
+      '3':
+        text: Powerflow
+        color: green
+      '4':
+        text: Fault
+        color: red
+      '5':
+        text: Shutdown
+        color: grey
+      '6':
+        text: Auto remixing
+        color: grey
+
+- address: 40
+  name: Zekalab system State
+  scale: 1
+  ui:
+    component: status_display
+    label: Zekalab system State
+    view: [live]
+    status_mapping:
+      '0':
+        text: A
+        color: red
+      '1':
+        text: B
+        color: orange
+      '2':
+        text: C
+        color: yellow
+      '3':
+        text: D
+        color: green
+      '4':
+        text: E
+        color: blue
+      '5':
+        text: F
+        color: indigo
+      '6':
+        text: G
+        color: violet
+      '7':
+        text: H
+        color: brown
+      '8':
+        text: I
+        color: pink
+      '9':
+        text: J
+        color: grey
+      '10':
+        text: K
+        color: black
+      '11':
+        text: L
+        color: white
+    bit_mapping:
+      '1': Initialising
+      '2': DCINTG
+      '3': Powerflow
+      '4': Fault
+- address: 41
+  name: Battery Status
+  scale: 1
+  ui:
+    component: status_display
+    label: Battery Status
+    view: [live]
+    status_mapping:
+      '0':
+        text: Not Ready
+        color: red
+      '1':
+        text: Ready
+        color: green
+
+
+
+
+- address: 43
+  name: CL_1 PowerMode
+  scale: 1
+  ui:
+    component: status_display
+    label: CL_1 PowerMode
+    view: [live]
+    status_mapping:
+      '0':
+        text: Not in powerflow/not ready
+        color: green
+      '1':
+        text: IM
+        color: grey
+      '2':
+        text: DM
+        color: grey
+      '3':
+        text: CM
+        color: grey
+- address: 44
+  name: CL_2 PowerMode
+  scale: 1
+  ui:
+    component: status_display
+    label: CL_2 PowerMode
+    view: [live]
+    status_mapping:
+      '0':
+        text: Not in powerflow/not ready
+        color: green
+      '1':
+        text: IM
+        color: grey
+      '2':
+        text: DM
+        color: grey
+      '3':
+        text: CM
+        color: grey
+- address: 120
+  name: ZEK_1_Main Status
+  scale: 1
+  ui:
+    component: bitmask_display
+    label: ZEK_1_Main Status
+    view: [live]
+    bit_mapping:
+      '0': Device Precharging
+      '1': Device Ready
+      '2': Device Running
+      '3': Device Fault
+      '6': Device Full Stop
+      '7': Device Alarm / Warning
+      '8': Voltage Limit/Setpoint
+      '9': Current Limit/setpoint
+      '10': Power Limit/Setpoint
+      '11': Auto-Boost Mode
+      '12': Phaseback
+      '15': Toggle Bit
+
+- address: 161
+  name: ZEK_1_Actual_Main_Control_word
+  scale: 1
+  ui:
+    component: bitmask_display
+    label: ZEK_1_Actual_Main_Control_word
+    view: [live]
+    bit_mapping:
+      '0':
+        '0': Stop the device
+        '1': Run the device
+      '2':
+        '0': Full Stop not active
+        '1': Full Stop engaged
+      '7':
+        '0': Reset faults
+        '1': Reset faults
+      '8':
+        '0': Precharge process not allowed to complete
+        '1': Precharge process allowed to complete
+      '11':
+        '0': Live Bit (State 0)
+        '1': Live Bit (State 1)
+
+
+- address: 121
+  name: ZEK_1_Auxiliary Status
+  scale: 1
+  ui:
+    component: status_display
+    label: ZEK_1_Auxiliary Status
+    view: [live]
+    status_mapping:
+      '0':
+        text: No mode selected
+      '1':
+        text: Buck 1Q voltage control mode
+      '2':
+        text: Buck 1Q current control mode
+      '3':
+        text: Boost 1Q voltage control mode
+      '4':
+        text: Boost 1Q current control mode
+      '5':
+        text: Buck 2Q voltage control mode
+      '6':
+        text: Boost 2Q voltage control mode
+      '8':
+        text: Boost A current B voltage control mode
+
+- address: 131
+  name: ZEK_2_Auxiliary Status
+  scale: 1
+  ui:
+    component: status_display
+    label: ZEK_2_Auxiliary Status
+    view: [live]
+    status_mapping:
+      '0':
+        text: No mode selected
+      '1':
+        text: Buck 1Q voltage control mode
+      '2':
+        text: Buck 1Q current control mode
+      '3':
+        text: Boost 1Q voltage control mode
+      '4':
+        text: Boost 1Q current control mode
+      '5':
+        text: Buck 2Q voltage control mode
+      '6':
+        text: Boost 2Q voltage control mode
+      '8':
+        text: Boost A current B voltage control mode
+    bit_mapping:
+      '0':
+        text: No mode selected
+      '1':
+        text: Buck 1Q voltage control mode
+      '2':
+        text: Buck 1Q current control mode
+      '3':
+        text: Boost 1Q voltage control mode
+      '4':
+        text: Boost 1Q current control mode
+      '5':
+        text: Buck 2Q voltage control mode
+      '6':
+        text: Boost 2Q voltage control mode
+      '8':
+        text: Boost A current B voltage control mode
+
+- address: 130
+  name: ZEK_2_Main Status
+  scale: 1
+  ui:
+    component: bitmask_display
+    label: ZEK_2_Main Status
+    view: [live]
+    bit_mapping:
+      '0': Device Precharging
+      '1': Device Ready
+      '2': Device Running
+      '3': Device Fault
+      '6': Device Full Stop
+      '7': Device Alarm / Warning
+      '8': Voltage Limit/Setpoint
+      '9': Current Limit/setpoint
+      '10': Power Limit/Setpoint
+      '11': Auto-Boost Mode
+      '12': Phaseback
+      '15': Toggle Bit
+
+- address: 127
+  name: ZEK_1_Actual_Droop_Co-efficient
+  scale: 1
+  dataType: int16
+  ui:
+    component: line_chart
+    label: ZEK_1_Actual_Droop_Co-efficient
+    view: [historical]
+- address: 128
+  name: ZEK_1_Actual_Boost_2Q_Voltage_Reference
+  scale: 1
+  dataType: int16
+  ui:
+    component: line_chart
+    label: ZEK_1_Actual_Boost_2Q_Voltage_Reference
+    view: [historical]
+- address: 129
+  name: ZEK_1_Actual_Current_Limit_Charge_SideA
+  scale: 1
+  dataType: int16
+  ui:
+    component: line_chart
+    label: ZEK_1_Actual_Current_Limit_Charge_SideA
+    view: [historical]
+
+# - address: 130
+#   name: ZEK_2_Main Status
+#   scale: 1
+#   ui:
+#     component: bitmask_display
+#     label: ZEK_2_Main Status
+#     view: [live]
+#     bit_mapping:
+#       '0': Device Precharging
+#       '1': Device Ready
+#       '2': Device Running
+#       '3': Device Fault
+#       '6': Device Full Stop
+#       '7': Device Alarm / Warning
+#       '8': Voltage Limit/Setpoint
+#       '9': Current Limit/setpoint
+#       '10': Power Limit/Setpoint
+#       '11': Auto-Boost Mode
+#       '12': Phaseback
+#       '15': Toggle Bit
+
+# - address: 131
+#   name: ZEK_2_Auxiliary Status
+#   scale: 1
+#   ui:
+#     component: status_display
+#     label: ZEK_2_Auxiliary Status
+#     view: [live]
+#     status_mapping:
+#       '0':
+#         text: No mode selected
+#       '1':
+#         text: Buck 1Q voltage control mode
+#       '2':
+#         text: Buck 1Q current control mode
+#       '3':
+#         text: Boost 1Q voltage control mode
+#       '4':
+#         text: Boost 1Q current control mode
+#       '5':
+#         text: Buck 2Q voltage control mode
+#       '6':
+#         text: Boost 2Q voltage control mode
+#       '8':
+#         text: Boost A current B voltage control mode
+#     bit_mapping:
+#       '0':
+#         text: No mode selected
+#       '1':
+#         text: Buck 1Q voltage control mode
+#       '2':
+#         text: Buck 1Q current control mode
+#       '3':
+#         text: Boost 1Q voltage control mode
+#       '4':
+#         text: Boost 1Q current control mode
+#       '5':
+#         text: Buck 2Q voltage control mode
+#       '6':
+#         text: Boost 2Q voltage control mode
+#       '8':
+#         text: Boost A current B voltage control mode
+
+- address: 137
+  name: ZEK_2_Actual_Droop_Co-efficeint
+  unit: null
+  scale: 1
+  group: zek
+  dataType: int16
+  ui:
+    view: ['']
+    component: line_chart
+    color: rgba(12, 199, 68, 1)
+    label: ZEK_2_Actual_Droop_Co-efficeint
+- address: 138
+  name: ZEK_2_Actual_Boost_2Q_Voltage_Reference
+  unit: null
+  scale: 0.1
+  group: zek
+  dataType: int16
+  ui:
+    view: ['']
+    component: line_chart
+    color: rgba(70, 246, 78, 1)
+    label: ZEK_2_Actual_Boost_2Q_Voltage_Reference
+- address: 139
+  name: ZEK_2_Actual_Current_Limit_Charge_SideA
+  unit: null
+  scale: 0.1
+  group: zek
+  dataType: int16
+  ui:
+    view: ['']
+    component: line_chart
+    color: rgba(131, 60, 163, 1)
+    label: ZEK_2_Actual_Current_Limit_Charge_SideA
+# - address: 161
+#   name: ZEK_1_Actual_Main_Control_word
+#   scale: 1
+#   ui:
+#     component: bitmask_display
+#     label: ZEK_1_Actual_Main_Control_word
+#     view: [live]
+#     bit_mapping:
+#       '0':
+#         '0': Stop the device
+#         '1': Run the device
+#       '2':
+#         '0': Full Stop not active
+#         '1': Full Stop engaged
+#       '7':
+#         '0': Reset faults
+#         '1': Reset faults
+#       '8':
+#         '0': Precharge process not allowed to complete
+#         '1': Precharge process allowed to complete
+#       '11':
+#         '0': Live Bit (State 0)
+#         '1': Live Bit (State 1)
+- address: 162
+  name: ZEK_2_Actual_Main_Control_word
+  scale: 1
+  ui:
+    component: bitmask_display
+    label: ZEK_2_Actual_Main_Control_word
+    view: [live]
+    bit_mapping:
+      '0':
+        '0': Stop the device
+        '1': Run the device
+      '2':
+        '0': Full Stop not active
+        '1': Full Stop engaged
+      '7':
+        '0': Reset faults
+        '1': Reset faults
+      '8':
+        '0': Precharge process not allowed to complete
+        '1': Precharge process allowed to complete
+      '11':
+        '0': Live Bit (State 0)
+        '1': Live Bit (State 1)
