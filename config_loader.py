@@ -3,7 +3,7 @@ import yaml
 import os
 from collections import defaultdict
 
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'register_config.yaml') # Path relative to this file
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'register_config.yaml') # Path relative to this file
 
 def load_register_config():
     """Loads and processes the register_config.yaml configuration."""
