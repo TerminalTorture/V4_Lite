@@ -44,6 +44,13 @@ class MQTTUploader:
         self.base_topic = base_topic or os.getenv('MQTT_BASE_TOPIC', 'vflow')
         self.bulk_topic = os.getenv('MQTT_BULK_TOPIC', f"{self.base_topic}/data/bulk")
         
+        # TLS Configuration from environment variables
+        self.use_tls = os.getenv('MQTT_USE_TLS', 'false').lower() in ('true', '1', 'yes', 'on')
+        self.tls_ca_certs = os.getenv('MQTT_TLS_CA_CERTS')
+        self.tls_certfile = os.getenv('MQTT_TLS_CERTFILE')
+        self.tls_keyfile = os.getenv('MQTT_TLS_KEYFILE')
+        self.tls_insecure = os.getenv('MQTT_TLS_INSECURE', 'false').lower() in ('true', '1', 'yes', 'on')
+        
         # MQTT client setup
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=self.client_id)
         self.client.on_connect = self._on_connect
@@ -106,7 +113,23 @@ class MQTTUploader:
                 return True
             
             try:
-                logging.info(f"🔗 Connecting to MQTT broker {self.broker_host}:{self.broker_port}...")
+                if self.use_tls:
+                    if not self.tls_ca_certs:
+                        logging.error("❌ MQTT_USE_TLS is true, but MQTT_TLS_CA_CERTS is not set.")
+                        return False
+                    
+                    logging.info(f"🔒 Attempting TLS connection to MQTT broker {self.broker_host}:{self.broker_port}...")
+                    self.client.tls_set(
+                        ca_certs=self.tls_ca_certs,
+                        certfile=self.tls_certfile,
+                        keyfile=self.tls_keyfile
+                    )
+                    if self.tls_insecure:
+                        logging.warning("⚠️ MQTT_TLS_INSECURE is true. Server hostname verification is disabled.")
+                        self.client.tls_insecure_set(True)
+                else:
+                    logging.info(f"🔗 Connecting to MQTT broker {self.broker_host}:{self.broker_port} (non-TLS)...")
+
                 self.client.connect(self.broker_host, self.broker_port, self.keepalive)
                 self.client.loop_start()  # Start background network loop
                   # Wait for connection with timeout
