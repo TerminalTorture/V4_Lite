@@ -15,7 +15,7 @@ class MQTTUploader:
     
     def __init__(self, 
                  broker_host: str = None,
-                 broker_port: int = 1883,
+                 broker_port: int = 443, 
                  username: str = None,
                  password: str = None,
                  client_id: str = None,
@@ -26,7 +26,7 @@ class MQTTUploader:
         
         Args:
             broker_host: MQTT broker hostname/IP
-            broker_port: MQTT broker port (default: 1883)
+            broker_port: MQTT broker port (default: 1883) or 443 for WSS
             username: MQTT username (optional)
             password: MQTT password (optional)
             client_id: MQTT client ID (optional, auto-generated if None)
@@ -36,7 +36,7 @@ class MQTTUploader:
         
         # Load configuration from environment variables if not provided
         self.broker_host = broker_host or os.getenv('MQTT_BROKER_HOST', '192.168.0.89') #localhost
-        self.broker_port = broker_port or int(os.getenv('MQTT_BROKER_PORT', '1883'))
+        self.broker_port = broker_port or int(os.getenv('MQTT_BROKER_PORT', '443'))
         self.username = username or os.getenv('MQTT_USERNAME')
         self.password = password or os.getenv('MQTT_PASSWORD')
         self.client_id = client_id or os.getenv('MQTT_CLIENT_ID', f"vflow_client_{int(time.time())}")
@@ -129,20 +129,21 @@ class MQTTUploader:
                     self.client.ws_set_options(path=self.ws_path)
 
                 if self.use_tls:
-                    # For WSS with a public CA, tls_ca_certs might not be strictly needed if system trusts the CA.
-                    # For TCP/TLS, it's more often required.
-                    if not self.tls_ca_certs:
-                        if self.transport == "tcp":
-                            logging.warning("⚠️ MQTT_USE_TLS is true for TCP, but MQTT_TLS_CA_CERTS is not set. Connection might fail if CA is not in system trust store.")
-                        else: # websockets
-                            logging.info("ℹ️ MQTT_USE_TLS is true for WebSockets. If using a public CA (e.g., Let's Encrypt), system trust store might be used. Specify MQTT_TLS_CA_CERTS if using a private CA or for explicit trust.")
+                    ca_certs_to_use = self.tls_ca_certs
+                    if self.tls_ca_certs:
+                        if not os.path.isfile(self.tls_ca_certs):
+                            logging.warning(f"⚠️ Specified MQTT_TLS_CA_CERTS ('{self.tls_ca_certs}') is not a valid file. Falling back to system CAs.")
+                            ca_certs_to_use = None
+                        else:
+                            logging.info(f"ℹ️ Using specified MQTT_TLS_CA_CERTS: {self.tls_ca_certs}")
+                    else:
+                        logging.info("ℹ️ MQTT_TLS_CA_CERTS is not set. Using system CAs for TLS.")
                     
                     logging.info(f"🔒 Attempting TLS configuration for MQTT connection...")
                     self.client.tls_set(
-                        ca_certs=self.tls_ca_certs,
+                        ca_certs=ca_certs_to_use,
                         certfile=self.tls_certfile,
                         keyfile=self.tls_keyfile
-                        # Consider adding tls_version=ssl.PROTOCOL_TLS_CLIENT or similar if specific TLS version is needed
                     )
                     if self.tls_insecure:
                         logging.warning("⚠️ MQTT_TLS_INSECURE is true. Server hostname verification is disabled. NOT RECOMMENDED.")
