@@ -35,7 +35,7 @@ class MQTTUploader:
         """
         
         # Load configuration from environment variables if not provided
-        self.broker_host = broker_host or os.getenv('MQTT_BROKER_HOST', '192.168.137.69') #localhost
+        self.broker_host = broker_host or os.getenv('MQTT_BROKER_HOST', '192.168.0.89') #localhost
         self.broker_port = broker_port or int(os.getenv('MQTT_BROKER_PORT', '1883'))
         self.username = username or os.getenv('MQTT_USERNAME')
         self.password = password or os.getenv('MQTT_PASSWORD')
