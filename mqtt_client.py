@@ -44,6 +44,10 @@ class MQTTUploader:
         self.base_topic = base_topic or os.getenv('MQTT_BASE_TOPIC', 'vflow')
         self.bulk_topic = os.getenv('MQTT_BULK_TOPIC', f"{self.base_topic}/data/bulk")
         
+        # Transport Configuration
+        self.transport = os.getenv('MQTT_TRANSPORT', 'tcp').lower()
+        self.ws_path = os.getenv('MQTT_WS_PATH', '/mqtt') # Default /mqtt if not set
+        
         # TLS Configuration from environment variables
         self.use_tls = os.getenv('MQTT_USE_TLS', 'false').lower() in ('true', '1', 'yes', 'on')
         self.tls_ca_certs = os.getenv('MQTT_TLS_CA_CERTS')
@@ -52,7 +56,13 @@ class MQTTUploader:
         self.tls_insecure = os.getenv('MQTT_TLS_INSECURE', 'false').lower() in ('true', '1', 'yes', 'on')
         
         # MQTT client setup
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=self.client_id)
+        if self.transport == "websockets":
+            logging.info("MQTT transport protocol set to WebSockets.")
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=self.client_id, transport="websockets")
+        else:
+            logging.info("MQTT transport protocol set to TCP (default).")
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=self.client_id) # Defaults to TCP
+
         self.client.on_connect = self._on_connect
         self.client.on_disconnect = self._on_disconnect
         self.client.on_publish = self._on_publish
@@ -113,22 +123,40 @@ class MQTTUploader:
                 return True
             
             try:
+                # Order is important for WSS: ws_set_options() before tls_set()
+                if self.transport == "websockets":
+                    logging.info(f"Configuring WebSocket options. Path: {self.ws_path}")
+                    self.client.ws_set_options(path=self.ws_path)
+
                 if self.use_tls:
+                    # For WSS with a public CA, tls_ca_certs might not be strictly needed if system trusts the CA.
+                    # For TCP/TLS, it's more often required.
                     if not self.tls_ca_certs:
-                        logging.error("❌ MQTT_USE_TLS is true, but MQTT_TLS_CA_CERTS is not set.")
-                        return False
+                        if self.transport == "tcp":
+                            logging.warning("⚠️ MQTT_USE_TLS is true for TCP, but MQTT_TLS_CA_CERTS is not set. Connection might fail if CA is not in system trust store.")
+                        else: # websockets
+                            logging.info("ℹ️ MQTT_USE_TLS is true for WebSockets. If using a public CA (e.g., Let's Encrypt), system trust store might be used. Specify MQTT_TLS_CA_CERTS if using a private CA or for explicit trust.")
                     
-                    logging.info(f"🔒 Attempting TLS connection to MQTT broker {self.broker_host}:{self.broker_port}...")
+                    logging.info(f"🔒 Attempting TLS configuration for MQTT connection...")
                     self.client.tls_set(
                         ca_certs=self.tls_ca_certs,
                         certfile=self.tls_certfile,
                         keyfile=self.tls_keyfile
+                        # Consider adding tls_version=ssl.PROTOCOL_TLS_CLIENT or similar if specific TLS version is needed
                     )
                     if self.tls_insecure:
-                        logging.warning("⚠️ MQTT_TLS_INSECURE is true. Server hostname verification is disabled.")
+                        logging.warning("⚠️ MQTT_TLS_INSECURE is true. Server hostname verification is disabled. NOT RECOMMENDED.")
                         self.client.tls_insecure_set(True)
-                else:
-                    logging.info(f"🔗 Connecting to MQTT broker {self.broker_host}:{self.broker_port} (non-TLS)...")
+                
+                # Determine connection type for logging
+                connection_type_log = "TCP"
+                if self.transport == "websockets":
+                    connection_type_log = "WSS" if self.use_tls else "WS"
+                elif self.use_tls:
+                    connection_type_log = "TLS/TCP"
+                
+                log_path = self.ws_path if self.transport == "websockets" else ""
+                logging.info(f"🔗 Connecting to MQTT broker {self.broker_host}:{self.broker_port}{log_path} ({connection_type_log})...")
 
                 self.client.connect(self.broker_host, self.broker_port, self.keepalive)
                 self.client.loop_start()  # Start background network loop
